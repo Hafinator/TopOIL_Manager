@@ -14,14 +14,14 @@
         </thead>
         <tbody>
           <tr v-for="item in items" :key="item.id">
-            <td>{{item}}</td>
-            <td>{{item}}</td>
-            <td>{{item}}</td>
-            <td>{{item}}</td>
-            <td>{{item}}</td>
-            <td>{{item}}</td>
-            <router-link class="btn" :to="{name: 'edit', params: {id: id}}">Edit</router-link>
-           <button @click="remove(item.id)">Delete</button>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.numOfEmployees}}</td>
+            <td>{{item.production}}</td>
+            <td>{{item.numOfPumpjacks}}</td>
+            <td>{{item.location}}</td>
+            <router-link class="btn" :to="{name: 'edit', params: {id: item.id}}">Edit</router-link>
+            <button style="margin-left: 5px" @click="remove(item.id)">Delete</button>
           </tr>
         </tbody>
       </table>
@@ -32,7 +32,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Axios from 'axios';
-
+// And yes everything here could be done with stores, 
+// but id didn't see the point since there's only one type of module and I thought you prioritize speed for your candidate testing...
 @Component({
   components: {
   },
@@ -41,16 +42,29 @@ export default class Index extends Vue {
   items: any[] = [];
 
   mounted() {
-
+    this.getItems();
   }
 
   getItems() {
-    Axios.get
+    return Axios.get('http://localhost:5000/api/OilField')
+      .then((response) => {
+        this.items = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   remove(id: number) {
     if (confirm('Do you really wish to delete this item?')) {
-      // TODO: DELETE
+      return Axios.delete(`http://localhost:5000/api/OilField/${id}`)
+        .then((response) => {
+          alert('Success!');
+          this.getItems();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 }
