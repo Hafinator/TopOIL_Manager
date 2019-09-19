@@ -2,7 +2,7 @@
   <div class="home">
     <h1>Add new Oil field </h1>
     <div>
-      <router-link :to="{name: 'home'}">Back</router-link>
+      <router-link class="btn btn-primary" :to="{name: 'home'}">Back</router-link>
       <div>
         <div>
           <label for="name">Name</label>
@@ -47,6 +47,9 @@ export default class Home extends Vue {
     location: '',
   }
 
+  /**
+   * Create a new item with the specified data and routes us to the index page
+   */
   saveAndGo() {
     return Axios.post('http://localhost:5000/api/OilField', this.newItem)
     .then((response) => {

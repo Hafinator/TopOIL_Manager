@@ -2,7 +2,7 @@
   <div class="home">
     <h1>Edit Oil field </h1>
     <div>
-      <router-link :to="{name: 'home'}">Back</router-link>
+      <router-link class="btn btn-primary" :to="{name: 'home'}">Back</router-link>
       <div v-if="newItem">
         <div>
           <label for="name">Name</label>
@@ -44,6 +44,9 @@ export default class Home extends Vue {
     this.getItem();
   }
 
+  /**
+   * Gets the specified item
+   */
   getItem() {
     return Axios.get(`http://localhost:5000/api/OilField/${this.$route.params.id}`)
       .then((response) => {
@@ -53,7 +56,9 @@ export default class Home extends Vue {
         console.log(error);
       });
   }
-
+  /**
+   * Saves the item and pushes us to the index page
+   */
   saveAndGo() {
     return Axios.put(`http://localhost:5000/api/OilField/${this.$route.params.id}`, this.newItem)
     .then((response) => {
